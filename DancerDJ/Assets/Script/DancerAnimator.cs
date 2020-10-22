@@ -10,7 +10,7 @@ public class DancerAnimator : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        anim.SetBool("Dance2", true);
+        anim.SetBool("Dance1", true);
     }
 
     // Update is called once per frame
