@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MusicEditor : MonoBehaviour
 {
+    DiscControl discControl;
+
     [SerializeField] Sprite[] musicNotes;
     [SerializeField] GameObject noteBoard;
     [SerializeField] Slider notesTimer;
@@ -13,6 +15,7 @@ public class MusicEditor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        discControl = FindObjectOfType<DiscControl>();
         NotesGenarator();
     }
 
@@ -22,26 +25,28 @@ public class MusicEditor : MonoBehaviour
         Timer();
     }
 
+    // nota degisimi icin sayac dondurur
     void Timer()
     {
         notesTimer.value -= Time.deltaTime;
 
-        if (notesTimer.value <= 0)
+        if (notesTimer.value <= 0) // sayaci sifirlar
         {
             NotesGenarator();
             notesTimer.value = notesTimer.maxValue;
+            discControl.DiscDjActivator(true);
         }
     }
 
+    // random nota olusturur
     void NotesGenarator()
     {
         int num = Random.Range(0, musicNotes.Length);
         boardInNote = musicNotes[num];
-        Debug.Log("Num: " + num);
-
         noteBoard.GetComponent<Image>().sprite = boardInNote;
     }
 
+    // ekrandaki notayi return eder
     public Sprite GetNoteInBoard()
     {
         return boardInNote;

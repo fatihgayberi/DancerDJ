@@ -8,10 +8,12 @@ public class DiscControl : MonoBehaviour
     MusicEditor musicEditor;
     [SerializeField] GameObject[] dancerGirl;
     [SerializeField] GameObject dancer;
+    [SerializeField] GameObject canvasObj;
     [SerializeField] GameObject discController;
     [SerializeField] Slider comboBar;
 
     Animator animator;
+    int animNum;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,7 @@ public class DiscControl : MonoBehaviour
         Touch();
     }
 
+    // diski saga sola dondurme islemini gerceklestirir
     void Touch()
     {
         if (Input.GetMouseButton(0))
@@ -45,21 +48,45 @@ public class DiscControl : MonoBehaviour
         }
     }
 
+    // diskin ignesinin degdigi objeleri kontrol eder
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.gameObject.GetComponent<Image>().sprite == musicEditor.GetNoteInBoard())
         {
-            string newAnimation;
-
-
             comboBar.value += 1;
-            newAnimation = "Dance" + comboBar.value;
-            animator.SetBool(newAnimation, true);
 
-            if (comboBar.value == comboBar.maxValue)
+            DiscDjActivator(false);
+            AnimationEditor();
+
+            if (comboBar.value == comboBar.maxValue) // eslestirmeleri tamamlarsa Winner durumuna gecer
             {
-
+                Win();
+                canvasObj.SetActive(false);
             }
         }
+    }
+
+    // ekrandaki danscilari aktif eder
+    void Win()
+    {
+        for (int i = 0; i < dancerGirl.Length; i++)
+        {
+            dancerGirl[i].SetActive(true);
+        }
+    }
+
+    // ignenin true ve false olmasini saglar
+    public void DiscDjActivator(bool mode)
+    {
+        gameObject.GetComponent<Collider>().enabled = mode;
+    }
+
+    // animasyonlari oynatir
+    void AnimationEditor()
+    {
+        string newAnimation;
+        animNum++;
+        newAnimation = "Dance" + animNum;
+        animator.SetBool(newAnimation, true);
     }
 }
